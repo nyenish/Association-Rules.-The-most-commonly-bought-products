@@ -1,0 +1,90 @@
+---
+title: "Clustering"
+author: "Yenish Nurmuhammedov"
+date: "2/6/2021"
+output:
+  html_document:
+    df_print: paged
+---
+```{stan output.var=ul.pdf}
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+install.packages("jpeg")
+install.packages("factoextra")
+install.packages("gridExtra")
+install.packages("ggplot2")
+install.packages("rgdal")
+library(jpeg)
+library(ggplot2)
+library(cluster)
+library(dplyr)
+library(raster)
+library(rgdal)
+
+setwd("D:\\R and R Studio\\Clustering.project\\image")
+if(!"raster" %in% rownames(installed.packages())){install.packages("raster")}
+photo <- system.file('fire.jpg',package='imager')
+
+image <- stack("fire.jpg")
+plot(image)
+
+r = raster("fire.jpg", band = 3)
+g = raster("fire.jpg", band = 2)
+b = raster("fire.jpg", band = 1)
+rgb = brick()
+plot(g)
+
+#just experement of the segmantion
+rgb = brick(b,g,r)
+plot(rgb)
+plotRGB(rgb, r = 3, g = 2, b = 1, stretch = "lin")
+
+
+ndvi = (mbr$fire.1 - mbr$fire.2)/(mbr$fire.1 - mbr$fire.2)
+plot(ndvi)
+
+
+kMeansResult <- kmeans(image[], centers=2)
+result <- raster(image[[1]])
+result <- setValues(result, kMeansResult$cluster)
+plot(result)
+
+kMeansResult <- kmeans(image[], centers=2)
+result <- raster(image[[1]])
+result <- setValues(result, kMeansResult$cluster)
+plot(result)
+
+kMeansResult <- kmeans(image[], centers=3)
+result <- raster(image[[1]])
+result <- setValues(result, kMeansResult$cluster)
+plot(result)
+
+plot(result, col=c("black", "orange","red"))
+
+
+length(kMeansResult$cluster[kMeansResult$cluster==3])/length(kMeansResult$cluster)*100
